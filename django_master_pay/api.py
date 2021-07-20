@@ -24,8 +24,9 @@ class MasterPayApi(object):
         self.session = requests.Session()
 
     def _make_request(self, method, url, *args, **kwargs):
-        if not kwargs.get('timeout'):
+        if 'timeout' not in kwargs:
             kwargs['timeout'] = MASTER_PAY_SETTINGS['timeout']
+
         try:
             response = getattr(self.session, method.lower())(url, *args, **kwargs)
             response.raise_for_status()
@@ -52,10 +53,10 @@ class MasterPayApi(object):
         }
 
         url = url + "?{}".format(urlencode(params))
-        data = self._make_request('get', url, )
+        data = self._make_request('post', url, )
         return data
 
     def get_payment(self, payment_id, partner_id=MASTER_PAY_SETTINGS['default_partner_id']):
-        url = os.path.join(MASTER_PAY_SETTINGS['base_url'], 'api', 'partner', str(partner_id), 'payment', str(partner_id), 'detail')
-        data = self._make_request(url)
+        url = os.path.join(MASTER_PAY_SETTINGS['base_url'], 'api', 'partner', str(partner_id), 'payment', str(payment_id), 'detail')
+        data = self._make_request('get', url)
         return data
