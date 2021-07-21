@@ -5,26 +5,31 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Payment(models.Model):
-    STATUS_NEW = 'NEW'
-    STATUS_IN_WORK = 'IN_WORK'
-    STATUS_DONE = 'DONE'
-    STATUS_ERROR = 'ERROR'
-    STATUS_CANCEL = 'CANCEL'
+    STATUS_WAIT = 0
+    STATUS_PAID = 1
+    STATUS_PAID_PERCENT = 2
+    STATUS_CANCEL = 3
+    STATUS_COMPLETE = 4
+    STATUS_ERROR = 5
 
     STATUS_CHOICES = (
-        (STATUS_NEW, _("Новый")),
-        (STATUS_IN_WORK, _("В работе")),
-        (STATUS_DONE, _("Проведен")),
+        (STATUS_WAIT, _("Ожидает")),
+        (STATUS_PAID, _("Выплачивается")),
+        (STATUS_PAID_PERCENT, _("Выплачен частично")),
         (STATUS_ERROR, _("Ошибка")),
-        (STATUS_CANCEL, _("Отменен"))
+        (STATUS_COMPLETE, _("Выплачен")),
+        (STATUS_CANCEL, _("Отменен пользователем"))
     )
+
+    WORK_STATUSES = (STATUS_WAIT, STATUS_PAID, STATUS_PAID_PERCENT)
 
     created_at = models.DateTimeField(_('Создан'), default=timezone.now)
     updated_at = models.DateTimeField(_('Обновлен'), auto_now=True)
     external_id = models.CharField(_("Внешний ключ"), max_length=250)
     master_pay_id = models.CharField(_("Индефикатор MasterPay"), max_length=250)
     partner_id = models.CharField(_("Индефикатор партнера в MasterPay"), max_length=250)
-    status = models.CharField(_("Статус"), max_length=100, choices=STATUS_CHOICES, default=STATUS_NEW)
+    status = models.CharField(_("Статус"), max_length=100, choices=STATUS_CHOICES, default=STATUS_WAIT)
+    error = models.TextField(_('Ошибка автоматической выплаты'), blank=True, null=True)
     record_data = JSONField(_("RAW data"))
 
     class Meta:
@@ -35,3 +40,8 @@ class Payment(models.Model):
         return "#{} external_id={} master_pay_id={} status={}".format(
             self.id, self.external_id, self.master_pay_id, self.status
         )
+
+    @classmethod
+    def status_display(cls, status):
+        status_dict = dict(cls.STATUS_CHOICES)
+        return status_dict[status]

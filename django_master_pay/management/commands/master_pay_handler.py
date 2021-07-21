@@ -1,6 +1,7 @@
 import logging
 
 from django.core.management import BaseCommand
+from django.db import transaction
 
 from django_master_pay import settings
 from django_master_pay.api import MasterPayApi, MasterPayApiException
@@ -19,7 +20,7 @@ class Command(BaseCommand):
         self.logger.info('START')
 
         payments = Payment.objects.filter(
-            status__in=(Payment.STATUS_NEW, Payment.STATUS_IN_WORK)
+            status__in=Payment.WORK_STATUSES
         )
 
         for payment in payments:
@@ -36,7 +37,13 @@ class Command(BaseCommand):
                 partner_id=payment.partner_id
             )
         except MasterPayApiException as e:
-            self.logger.warning(str(e))
+            self.logger.warning("\t{}".format(str(e)))
         else:
             if payment_data['status'] != payment.status:
-                pass
+                self.logger.info('\tNew status: OLD={} NEW={}'.format(payment.get_status_display(), Payment.status_display(payment_data['status'])))
+                with transaction.atomic():
+                    payment.status = payment_data['status']
+                    payment.record_data = payment_data
+                    payment.error = payment_data['auto_payment_error']
+                    payment.save(update_fields=['status', 'record_data', 'error'])
+                    self.callback(**payment_data)

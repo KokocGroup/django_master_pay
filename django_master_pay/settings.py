@@ -7,7 +7,7 @@ except ImportError:
     django_settings = None
 
 
-def default_callback(*args, **kwargs):
+def default_callback(**kwargs):
     raise NotImplemented("MasterPay callback not implemented")
 
 
