@@ -28,7 +28,7 @@ class Payment(models.Model):
     external_id = models.CharField(_("Внешний ключ"), max_length=250)
     master_pay_id = models.CharField(_("Индефикатор MasterPay"), max_length=250)
     partner_id = models.CharField(_("Индефикатор партнера в MasterPay"), max_length=250)
-    status = models.CharField(_("Статус"), max_length=100, choices=STATUS_CHOICES, default=STATUS_WAIT)
+    status = models.PositiveSmallIntegerField(_("Статус"), choices=STATUS_CHOICES, default=STATUS_WAIT)
     error = models.TextField(_('Ошибка автоматической выплаты'), blank=True, null=True)
     record_data = JSONField(_("RAW data"))
 

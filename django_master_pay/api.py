@@ -49,14 +49,14 @@ class MasterPayApi(object):
             'purse_type': purse_type,
             'currency': currency,
             'number': purse_number,
-            'external_id': external_id
+            'external_id': external_id,
         }
 
-        url = url + "?{}".format(urlencode(params))
-        data = self._make_request('post', url, )
+        url = url + "?{}".format(urlencode({'token': self.token}))
+        data = self._make_request('post', url, data=params)
         return data
 
     def get_payment(self, payment_id, partner_id=MASTER_PAY_SETTINGS['default_partner_id']):
         url = os.path.join(MASTER_PAY_SETTINGS['base_url'], 'api', 'partner', str(partner_id), 'payment', str(payment_id), 'detail')
-        data = self._make_request('get', url)
+        data = self._make_request('get', "{}?{}".format(url, urlencode({'token': self.token})))
         return data

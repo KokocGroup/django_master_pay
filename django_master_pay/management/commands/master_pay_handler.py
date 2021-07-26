@@ -40,7 +40,7 @@ class Command(BaseCommand):
             self.logger.warning("\t{}".format(str(e)))
         else:
             if payment_data['status'] != payment.status:
-                self.logger.info('\tNew status: OLD={} NEW={}'.format(payment.get_status_display(), Payment.status_display(payment_data['status'])))
+                self.logger.info('\tNew status: OLD={} NEW={}'.format(Payment.status_display(payment.status), Payment.status_display(payment_data['status'])))
                 with transaction.atomic():
                     payment.status = payment_data['status']
                     payment.record_data = payment_data
