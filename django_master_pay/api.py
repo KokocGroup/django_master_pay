@@ -35,7 +35,7 @@ class MasterPayApi(object):
                 error_data = json.loads(e.response.content)
                 raise MasterPayApiException(error_data['code'], error_data['error'], e.response.status_code)
             except json.JSONDecodeError:
-                raise
+                raise e
         json_data = response.json()
         if not json_data['success']:
             raise MasterPayApiException(json_data['code'], json_data['error'], response.status_code)
