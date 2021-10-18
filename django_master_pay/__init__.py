@@ -1,7 +1,7 @@
 from .utils import create_payment
 
 __title__ = 'Django Master Pay'
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __author__ = 'KokocGroup'
 __license__ = 'BSD 2-Clause'
 
