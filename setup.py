@@ -49,7 +49,7 @@ setup(
     author='KokocGroup',
     author_email='dev@kokoc.com',
     install_requires=[
-        'requests==2.26.0'
+        'requests'
     ],
     classifiers=[
         'Development Status :: 5 - Production/Stable',
