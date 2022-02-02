@@ -5,6 +5,8 @@ class PurseType(object):
     TYPE_ZALEY_CASH = 'ZaleyCash'
     TYPE_RU_CARD = 'RUCARD'
     TYPE_UKR_CARD = 'UKRCARD'
+    TYPE_WORLD_CARD = 'WORLDCARD'
+    TYPE_CIS_CARD = 'SNGCARD'
     TYPE_MTS = 'MTS'
     TYPE_BEELINE = 'Beeline'
     TYPE_MEGAFON = 'MegaFon'
