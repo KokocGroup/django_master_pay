@@ -11,6 +11,7 @@ class Payment(models.Model):
     STATUS_CANCEL = 3
     STATUS_COMPLETE = 4
     STATUS_ERROR = 5
+    STATUS_UNREALIZABLE = 6
 
     STATUS_CHOICES = (
         (STATUS_WAIT, _("Ожидает")),
@@ -18,7 +19,8 @@ class Payment(models.Model):
         (STATUS_PAID_PERCENT, _("Выплачен частично")),
         (STATUS_ERROR, _("Ошибка")),
         (STATUS_COMPLETE, _("Выплачен")),
-        (STATUS_CANCEL, _("Отменен пользователем"))
+        (STATUS_CANCEL, _("Отменен пользователем")),
+        (STATUS_UNREALIZABLE, _("Неисполнимый")),
     )
 
     WORK_STATUSES = (STATUS_WAIT, STATUS_PAID, STATUS_PAID_PERCENT)

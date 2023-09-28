@@ -18,3 +18,4 @@ class Currency(object):
     RUB = 'RUB'
     USD = 'USD'
     EURO = 'EUR'
+    INR = 'INR'
