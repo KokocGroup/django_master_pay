@@ -42,14 +42,25 @@ class MasterPayApi(object):
 
         return json_data['result']
 
-    def create_payment(self, amount, purse_type, currency, purse_number, external_id, partner_id=MASTER_PAY_SETTINGS['default_partner_id']):
+    def create_payment(
+            self,
+            amount,
+            purse_type,
+            currency,
+            purse_number,
+            external_id,
+            partner_id=MASTER_PAY_SETTINGS['default_partner_id'],
+            **extra_params
+    ):
         url = os.path.join(MASTER_PAY_SETTINGS['base_url'], 'api', 'partner', str(partner_id), 'payment', 'create/')
+        extra = extra_params or {}
         params = {
             'amount': Decimal(amount),
             'purse_type': purse_type,
             'currency': currency,
             'number': purse_number,
             'external_id': external_id,
+            **extra
         }
 
         url = url + "?{}".format(urlencode({'token': self.token}))
