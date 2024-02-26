@@ -24,7 +24,10 @@ class Command(BaseCommand):
         )
 
         for payment in payments:
-            self.process_payment(payment)
+            try:
+                self.process_payment(payment)
+            except Exception as e:
+                self.logger.error(str(e))
 
         self.logger.info('END')
 
