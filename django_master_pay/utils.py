@@ -11,10 +11,11 @@ def create_payment(
         purse_number,
         external_id,
         partner_id=MASTER_PAY_SETTINGS['default_partner_id'],
+        token=MASTER_PAY_SETTINGS['token'],
         **extra_params
 ):
     from django_master_pay.models import Payment
-    api = MasterPayApi()
+    api = MasterPayApi(token=token)
 
     with transaction.atomic():
         payment_data = api.create_payment(
